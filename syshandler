@@ -1,0 +1,14 @@
+<%once>
+</%once>
+
+<%init>
+    $User = $ENV{ 'REMOTE_USER' }
+        ? $SpaceMan->person( $ENV{ 'REMOTE_USER' } )
+        : undef;
+    $m->call_next;
+    @_messages = ();
+</%init>
+
+<%flags>
+    inherit => undef
+</%flags>

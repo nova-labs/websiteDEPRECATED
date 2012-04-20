@@ -1,0 +1,50 @@
+<%attr>
+    breadcrumb      => 'Home'
+    no_breadcrumbs  => 1
+</%attr>
+<%once>
+    use File::Slurp qw( slurp );
+</%once>
+
+<div class="hero-unit">
+    <img src="/images/NOVALabs-big.png" />
+</div>
+
+<div class="row">
+    <div class="span6">
+    <h2>Support Nova Labs!</h2>
+    <p>There are currently two important ways to support Nova Labs financially:
+    as a <b>Regular Contributor</b> or as a <b>Donor</b>.</p>
+    <p>A <b>Regular Contributor</b> supports Nova Labs by making recurring
+    contributions on a regular schedule, typically monthly. This allows us to
+    budget for expenses and plan for growth. This is recommended for supporters
+    who plan to utilize the space and participate in activities on a regular
+    basis. We are committed to supporting the community by promoting making for
+    all, regardless of someone's ability to pay. While a contribution is not
+    required to participate in our activities, for those who are able, we
+    suggest a support level of $50 per month.</p>
+    <p><b>Donors</b> who believe in and support our mission but who may not
+    have the opportunity to utilize our space on a regular basis can show their
+    support for Nova Labs by making one-time or less frequent donations.
+    Donations can be used to support capital costs like new equipment and are
+    vital for providing an enriching experience for our community of
+    makers.</p>
+
+    <p><a href="https://www.dwolla.com/hub/nova-labs"><img src="/images/donate-with-dwolla.png" border="0"></a></p>
+    <p>Please be sure to include your name and email address in the 'Details' section when contributing through Dwolla, so we know who to thank!</p>
+    <p>Other options besides Dwolla are coming soon!</p>
+    </div>
+    <div class="span5">
+        <h2>Current Status</h2>
+    <p style="font-size: 200%">Nova Labs is
+% if ( -f "/tmp/space-is-open" ) {
+    <span class="btn btn-success btn-large">OPEN</span>
+% } else {
+    <span class="btn btn-danger btn-large">CLOSED</span>
+% }
+    </p>
+
+        <h2>Membership</h2>
+        <p>Interested in joining us?  We're still working out the details of our membership program, but if you send us an email at <a href="mailto:membership@nova-labs.org">membership@nova-labs.org</a> we'll be happy to let you know when we're ready!</p>
+    </div>
+</div>

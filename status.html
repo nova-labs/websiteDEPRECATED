@@ -1,0 +1,33 @@
+<%args>
+    $status => ''
+</%args>
+
+<%init>
+if ( $status ) {
+    if ( $status eq 'open' ) {
+        system( 'touch', '/tmp/space-is-open' );
+    } else {
+        system( 'rm', '-f', '/tmp/space-is-open' );
+    }
+}
+</%init>
+
+<div class="hero-unit">
+<p style="font-size: 500%">Current Status is
+% if ( -f "/tmp/space-is-open" ) {
+    OPEN
+% } else {
+    CLOSED
+% }
+</p>
+</div>
+
+<div class="row">
+
+<br><br><br><br>
+
+<ul>
+<li><a href="?status=open">Set Status to OPEN</a></li>
+<li><a href="?status=closed">Set Status to CLOSED</a></li>
+</ul>
+</div>

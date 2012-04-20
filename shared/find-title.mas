@@ -1,0 +1,60 @@
+<%doc>
+    Copyright 2005 Jason Kohles <email@jasonkohles.com>
+    http://www.jasonkohles.com/
+
+    This is a Mason component which attempts to determine the title that
+applies to a given URI.  It takes one required argument, which is the URI
+to determine the title of.  Generally this component isn't used standalone,
+but is used by other components that need to determine titles (for example,
+see the 'breadcrumbs', 'index-this-directory', and 'main-menu' components,
+which you can find in the 'HTML::Mason Code Snippets' section of my website
+at http://www.jasonkohles.com/snippets/HTML-Mason/.
+
+    This component uses several techniques for attempting to determine the
+title for a URI, the first one of these that produces a true value will
+determine the title.
+
+  * For each of the items in @searchpath, append it to the current URI and
+    check:
+    * That the new URI refers to a valid component
+    * If any of the methods listed in @methods return a title
+    * If any of the attributes listed in @attributes contain a title
+
+    The default for @methods and @attributes is ('title').
+    The default for @searchpath is ('','/index.html','/dhandler','/autohandler')
+
+    If you override @searchpath, it is important that you keep the empty string
+at the beginning of the path, this allows the search to find the component
+when it is not a directory and nothing needs to be added to it.
+
+    If a title cannot be found for the given document, an empty string will
+be printed instead.  You can control what methods and attributes are searched
+by passing listrefs named 'methods' and 'attributes' to the componenent.
+</%doc>
+
+<%init>
+	foreach my $sp (@searchpath) {
+		next unless $m->interp->comp_exists($uri.$sp);
+		my $comp = $m->fetch_comp($uri.$sp);
+
+		foreach my $attribute (@attributes) {
+			my $title = $comp->attr_if_exists($attribute);
+			if($title) { print $title; return; }
+		}
+
+		foreach my $method (@methods) {
+			next unless $comp->method_exists($method);
+			my $title = $comp->scall_method($method);
+			if($title) { print $title; return; }
+		}
+
+	}
+	return; # otherwise the empty space in the component will get printed
+</%init>
+
+<%args>
+	$uri
+	@methods	=> ('title')
+	@attributes	=> ('title')
+	@searchpath => ('', '/index.html','/dhandler','/autohandler')
+</%args>

@@ -1,0 +1,80 @@
+<%doc>
+    Copyright 2005 Jason Kohles <email@jasonkohles.com>
+    http://www.jasonkohles.com/
+
+    This Mason component automatically creates navigation 'breadcrumbs', the
+little trail on the page that shows where you are in the document structure
+of the site, and allows you to click on different parts of the path to return
+to that point in the structure.  It does this by breaking the URI into it's
+component parts, then determining the uri and title for each part of that path.
+
+    For each part of the uri path, the following steps are taken:
+      1) Locate the component for the current portion of the URI
+      2) Find the title for the current portion of the URI
+      3) construct a link for that portion of the URI
+
+   Once a link has been constructed for each part of the URI, they are joined
+together with the contents of the 'joiner' argument (by default ' / ') and
+printed.
+</%doc>
+
+<%init>
+    my $uri = $r->uri; $uri =~ s#/+#/#g;
+    my @parts = split( '/', $uri );
+    my @trail = ();
+    push( @trail, "$trail[$#trail]/$_" ) for @parts;
+    s#/+#/#g for @trail;
+    my @crumbs = ();
+    my %seen = ();
+    foreach my $trail ( @trail ) {
+        my $breadcrumbs = $m->scomp(
+            '/shared/find-title.mas',
+            uri             => $trail,
+            methods         => [qw( breadcrumbs )],
+            attributes      => [],
+        );
+        if ( $breadcrumbs ) {
+            push( @crumbs => $breadcrumbs );
+            last;
+        }
+        my $title = $m->scomp(
+            '/shared/find-title.mas',
+            uri             => $trail,
+            methods         => [qw( breadcrumb title )],
+            attributes      => [qw( breadcrumb title )],
+        );
+        if ( $debug ) {
+            # push(@crumbs,"(<a href=\"$trail\">$title</a>)");
+        } else {
+            unless ( $title ) {
+                ( $title = $trail ) =~ s{ ^.*/ }{ }x;
+            }
+            next unless $title;
+            next if $seen{ $title }++;
+            push( @crumbs => [ $trail, $title ] );
+            # push(@crumbs,"<a href=\"$trail\">$title</a>");
+        }
+    }
+    
+    print '<ul class="breadcrumb">';
+    for my $i ( 0 .. $#crumbs ) {
+        my ( $trail, $title ) = @{ $crumbs[ $i ] };
+        if ( $i == $#crumbs ) {
+            printf( '<li class="active">%s</li>', $title );
+        } else {
+            printf(
+                '<li><a href="%s">%s</a> <span class="divider">/</span></li>',
+                $trail, $title,
+            );
+        }
+    }
+    print '</ul>';
+    print "\n";
+    # print join($joiner, @crumbs);
+    return;    # otherwise the empty spaces in the component get printed too
+</%init>
+
+<%args>
+    $joiner    => ' / '
+    $debug    => 0
+</%args>
