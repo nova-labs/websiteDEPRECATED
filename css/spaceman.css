@@ -1,3 +1,13 @@
 .class {
     border : 1px solid black;
 }
+
+div.infobox table th {
+    text-align  : right;
+}
+div.infobox table tr.odd {
+    background-color: #E2E4FF;
+}
+div.infobox table tr.even {
+    background-color: white;
+}
