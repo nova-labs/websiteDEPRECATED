@@ -1,0 +1,32 @@
+%# vim: filetype=mason
+<%init>
+# set XML content type to make RSS feed readers happy
+$r->content_type('application/xml');
+
+# check presense of stauts flag file
+my $status_flag_file = "/tmp/space-is-open";
+open(my $status_fh,"<",$status_flag_file);
+my $status = <$status_fh>;
+chomp $status;
+
+# we're under mod_perl, so adjusting the timezone can get hairy.  Save and restore it.
+my ($mtime) = (stat($status_flag_file))[9];
+my @gmtime = gmtime($mtime);
+my $date_change = strftime("%a, %d %b %Y %T GMT",@gmtime);
+</%init><%once>
+use POSIX qw(strftime);
+</%once><?xml version="1.0"?>
+<rss version="2.0">
+  <channel>
+    <title>Nova-Labs open/closed status feed</title>
+    <link>http://www.nova-labs.org/</link>
+    <description>Real-time status feed of nova-labs open/closed status</description>
+    <language>en</language>
+    <docs>http://www.nova-labs.org/</docs>
+    <item>
+      <pubDate><%$date_change%></pubDate>
+      <title>Nova-Labs is now <%$status%>!</title>
+      <link>http://www.nova-labs.org</link>
+    </item>
+  </channel>
+</rss>
