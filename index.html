@@ -1,11 +1,25 @@
+%# vim: filetype=mason
+<%doc>
+Sat May 19 12:21:30 EDT 2012 - warewolf
+
+Make space open/closed file persistent
+
+</%doc>
 <%attr>
     breadcrumb      => 'Home'
     no_breadcrumbs  => 1
 </%attr>
 <%once>
     use File::Slurp qw( slurp );
+    my $status_flag_file = "/tmp/space-is-open";
 </%once>
 
+<%init>
+  open(my $status_fh,"<",$status_flag_file);
+  my $status = <$status_fh>;
+  chomp $status;
+  close $status_fh;
+</%init>
 <div class="hero-unit">
     <img src="/images/NOVALabs-big.png" />
 </div>
@@ -35,8 +49,10 @@
     <div class="span5">
         <h2>Current Status</h2>
     <p style="font-size: 200%">Nova Labs is
-% if ( -f "/tmp/space-is-open" ) {
+% if ( $status eq "open" ) {
     <span class="btn btn-success btn-large">OPEN</span>
+% } elsif ( $status eq "closed") {
+    <span class="btn btn-danger btn-large">CLOSED</span>
 % } else {
     <span class="btn btn-danger btn-large">CLOSED</span>
 % }
