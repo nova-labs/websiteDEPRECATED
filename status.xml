@@ -11,13 +11,15 @@ open(my $status_fh,"<",$status_flag_file);
 my $status = <$status_fh>;
 chomp $status;
 
-# we're under mod_perl, so adjusting the timezone can get hairy.  Save and restore it.
-my ($mtime) = (stat($status_flag_file))[9];
-my @gmtime = gmtime($mtime);
-my $date_change = strftime("%a, %d %b %Y %T GMT",@gmtime);
-</%init><%once>
-use POSIX qw(strftime);
-</%once><?xml version="1.0"?>
+my $mtime = DateTime->from_epoch(
+    epoch       => (stat($status_flag_file))[9],
+    time_zone   => 'GMT',
+    formatter   => DateTime::Format::Strptime->new(
+        pattern => "%a, %d %b %Y %T %Z"
+    ),
+);
+</%init>
+<?xml version="1.0"?>
 <rss version="2.0">
   <channel>
     <title>Nova-Labs open/closed status feed</title>
@@ -26,7 +28,7 @@ use POSIX qw(strftime);
     <language>en</language>
     <docs>http://www.nova-labs.org/</docs>
     <item>
-      <pubDate><%$date_change%></pubDate>
+      <pubDate><% $mtime %></pubDate>
       <title>Nova-Labs is now <%$status%>!</title>
       <link>http://www.nova-labs.org</link>
     </item>
