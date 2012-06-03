@@ -1,37 +1,21 @@
-%# vim: filetype=mason
-<%doc>
-Sat May 19 12:21:30 EDT 2012 - warewolf
-
-Make space open/closed file persistent
-
-</%doc>
 <%args>
     $status => ''
 </%args>
 
-<%once>
-  my $status_flag_file = "/tmp/space-is-open";
-</%once>
 <%init>
-# writing status
-if ( defined($status)) && ( $status eq 'open' || $status eq 'closed' ) ) {
-     # params validated, safe to overwrite state file
-     open(my $status_fh,">",$status_flag_file);
+my $status_flag_file = "/tmp/space-is-open";
 
-    if ( $status eq 'open' ) {
-       print $status_fh "open\n";
-    } elsif ($status eq 'closed'){
-       print $status_fh "closed\n";
-    } else { # catchall, default to closed
-       print $status_fh "closed\n";
-    }
+# writing status
+if ( $status && ( $status eq 'open' || $status eq 'closed' ) ) {
+    # params validated, safe to overwrite state file
+    open( my $status_fh, ">", $status_flag_file );
+    print $status_fh "$status\n";
     close $status_fh;
 } else {
-  # reading status, or status value was invalid.
-  open(my $status_fh,"<",$status_flag_file);
-  my $status = <$status_fh>;
-  close $status_fh;
-  chomp $status;
+    # reading status, or status value was invalid.
+    open( my $status_fh, "<", $status_flag_file );
+    $status = <$status_fh>;
+    close $status_fh;
 }
 </%init>
 
@@ -39,7 +23,7 @@ if ( defined($status)) && ( $status eq 'open' || $status eq 'closed' ) ) {
 <p style="font-size: 500%">Current Status is
 % if ( $status eq 'open') {
     OPEN
-% } elsif ($status eq 'closed'){
+% } elsif ( $status eq 'closed' ) {
     CLOSED
 % } else {
     CLOSED

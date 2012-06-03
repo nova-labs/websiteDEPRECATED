@@ -1,4 +1,6 @@
-%# vim: filetype=mason
+<%flags>
+    inherit => undef
+</%flags>
 <%init>
 # set XML content type to make RSS feed readers happy
 $r->content_type('application/xml');
