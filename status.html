@@ -3,31 +3,21 @@
 </%args>
 
 <%init>
-my $status_flag_file = "/tmp/space-is-open";
+my $status_flag_file = "/tmp/space-status";
 
 # writing status
 if ( $status && ( $status eq 'open' || $status eq 'closed' ) ) {
     # params validated, safe to overwrite state file
-    open( my $status_fh, ">", $status_flag_file );
-    print $status_fh "$status\n";
-    close $status_fh;
-} else {
+    write_file( $status_flag_file, "$status\n" );
+} elsif ( -f $status_flag_file ) {
     # reading status, or status value was invalid.
-    open( my $status_fh, "<", $status_flag_file );
-    $status = <$status_fh>;
-    close $status_fh;
+    ( $status ) = read_file( $status_flag_file, chomp => 1 );
 }
+$status ||= 'closed';
 </%init>
 
 <div class="hero-unit">
-<p style="font-size: 500%">Current Status is
-% if ( $status eq 'open') {
-    OPEN
-% } elsif ( $status eq 'closed' ) {
-    CLOSED
-% } else {
-    CLOSED
-% }
+<p style="font-size: 500%">Current Status is <% uc( $status ) %>
 </p>
 </div>
 
