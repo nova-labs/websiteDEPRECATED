@@ -6,7 +6,7 @@
 $r->content_type('application/xml');
 
 # check presense of stauts flag file
-my $status_flag_file = "/tmp/space-is-open";
+my $status_flag_file = "/tmp/space-status";
 open(my $status_fh,"<",$status_flag_file);
 my $status = <$status_fh>;
 chomp $status;
