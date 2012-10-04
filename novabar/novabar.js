@@ -16,7 +16,7 @@ jQuery(document).ready( function($) {
             break;
         }
     }
-    var sections = [ "About", "Blog", "Wiki", "Calendar" ]; // Groups
+    var sections = [ "About", "Blog", "Wiki", "Calendar", "Sponsors", "Contact" ]; // Groups
     if ( uid ) {
         sections = sections.concat( [ "CMS" ] );
     }
