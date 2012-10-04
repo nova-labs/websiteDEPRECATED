@@ -20,6 +20,13 @@ my $content = $m->scomp( $m->fetch_next, %ARGS );
 <link href="/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
 <link href="/css/jquery.ipe.css" rel="stylesheet" type="text/css" />
 <link href="/css/spaceman.css" rel="stylesheet" type="text/css" />
+% for my $attr (qw( stylesheet stylesheets )) {
+%   if ( my $val = $m->base_comp->attr_if_exists( $attr ) ) {
+%       for my $src ( split( ' ', $val ) ) {
+<link href="<% $src %>" rel="stylesheet" type="text/css" />
+%       }
+%   }
+% }
 
 <!-- HTML5 shim, for IE6-8 support of HTML elements -->
 <!--[if lt IE 9]>
@@ -81,15 +88,27 @@ my $content = $m->scomp( $m->fetch_next, %ARGS );
 <script type="text/javascript" src="/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="/js/jquery.ipe.js"></script>
 <script type="text/javascript" src="/novabar/novabar.js"></script>
+<script type="text/javascript" src="/js/ape-client.js"></script>
+<script type="text/javascript" src="/js/ape-config.js"></script>
+% for my $attr (qw( javascript javascripts )) {
+%   if ( my $val = $m->base_comp->attr_if_exists( $attr ) ) {
+%       for my $src ( split( ' ', $val ) ) {
+<script type="text/javascript" src="<% $src %>"></script>
+%       }
+%   }
+% }
 <script type="text/javascript">
 $(function() {
     $( '.alert' ).alert();
     $( '.nav-tabs' ).show();
     $( '.datatable' ).dataTable();
     // $( '.ipe' ).ipe();
+<& SELF:.initjs &>
 });
 </script>
 
+<hr>
+<p style="text-align: center">Nova Labs is a fiscally sponsored project of the School Factory, Inc. a 501(c)3 non-profit corporation.</p>
 </body>
 <link rel="stylesheet" href="/css/bootstrap-responsive.css" />
 </html>
@@ -104,3 +123,6 @@ $(function() {
 <%flags>
     inherit => '/syshandler'
 </%flags>
+
+<%method .initjs>
+</%method>
