@@ -27,7 +27,7 @@ jQuery(document).ready( function($) {
     tb += '<div id="novabar-container">';
     tb += '<div id="novabar">';
     tb += '<h3><a href="/">';
-    //tb += '<img src="/images/NOVALabs-small.png" border="0" />';
+    //tb += '<img alt="Nova Labs" src="/images/nova-labs_title_small.png" border="0" />';
     tb += 'Nova Labs</a></h3>';
     tb += '<ul>';
 
@@ -47,23 +47,22 @@ jQuery(document).ready( function($) {
 
     tb += '</ul>';
 
+	tb += '<ul style="float:right">';
+    tb += '<li><a target="_blank" href="http://meetup.com/nova-makers">Meetup</a></li>';
     if ( uid ) {
-        tb += '<ul style="float:right">';
         //  tb += '<li><a href="/person/' + uid + '">' + uid + '</a></li>';
         tb += '<li><a href="/account/index.html">My Account</a></li>';
         tb += '<li><a href="https://www.nova-labs.org/auth/LOGOUT">Log Out</a></li>';
-        tb += '</ul>';
     } else {
         //tb += '<form action="/auth/LOGIN" style="float:right">';
         //tb += '<input type="text" name="username" placeholder="Username">';
         //tb += '<input type="password" name="password" placeholder="Password">';
         //tb += '<button class="novabar-button" type="submit">Sign in</button>';
         //tb += '</form>';
-        tb += '<ul style="float:right">';
         tb += '<li><a href="https://www.nova-labs.org/auth/register.html">Register</a></li>';
         tb += '<li><a href="https://www.nova-labs.org/auth/login.html?target=' + location.href + '">Log In</a></li>';
-        tb += '</ul>';
     }
+	tb += '</ul>';
 
     //tb += '</div></div></div>';
     tb += '</div></div>';
