@@ -26,8 +26,8 @@ jQuery(document).ready( function($) {
     var tb = '';
     tb += '<div id="novabar-container">';
     tb += '<div id="novabar">';
-    tb += '<h3><a href="/">';
-    //tb += '<img alt="Nova Labs" src="/images/nova-labs_title_small.png" border="0" />';
+    tb += '<h3><a style="height:40px; padding-top:0px;" href="/">';
+    tb += '<img src="/images/nova-labs-title-inline-clear-border_149x40.png" border="0" />';
     tb += 'Nova Labs</a></h3>';
     tb += '<ul>';
 
