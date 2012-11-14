@@ -16,7 +16,7 @@ jQuery(document).ready( function($) {
             break;
         }
     }
-    var sections = [ "About", "Blog", "Wiki", "Calendar", "Sponsors", "Contact" ]; // Groups
+    var sections = [ "About", "Blog", "Wiki", "Calendar", "Membership", "Sponsors", "Contact" ]; // Groups
     if ( uid ) {
         sections = sections.concat( [ "CMS" ] );
     }
@@ -64,7 +64,6 @@ jQuery(document).ready( function($) {
     }
 	tb += '</ul>';
 
-    //tb += '</div></div></div>';
     tb += '</div></div>';
 
     $(tb).appendTo( 'body' );
