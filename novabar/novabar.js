@@ -48,7 +48,7 @@ jQuery(document).ready( function($) {
     tb += '</ul>';
 
 	tb += '<ul style="float:right">';
-    tb += '<li><a target="_blank" href="http://meetup.com/nova-makers">Meetup</a></li>';
+    tb += '<li><a target="_blank" href="http://meetup.com/nova-makers/join">Join Meetup!</a></li>';
     if ( uid ) {
         //  tb += '<li><a href="/person/' + uid + '">' + uid + '</a></li>';
         tb += '<li><a href="/account/index.html">My Account</a></li>';
