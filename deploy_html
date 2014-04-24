@@ -1,0 +1,26 @@
+#!/bin/bash
+
+DESTDIR=/tmp/www
+ZIPFILE=/tmp/website.$$.zip
+
+# get the latest version from github
+wget https://github.com/nova-labs/website/archive/master.zip -O $ZIPFILE
+
+# go to the destination directory
+cd $DESTDIR
+
+# unzip the website zipfile
+unzip $ZIPFILE 
+
+# delete the old backup if it exists
+[ -d html.prev ] && rm -rf html.prev
+
+# move the current site to be the new backup
+mv html html.prev
+
+# move the new site to the production location
+mv website-master/html html
+
+# clean up leftovers
+rm -rf website-master $ZIPFILE
+
