@@ -20,6 +20,7 @@ mv html html.prev
 
 # move the new site to the production location
 mv website-master/html html
+mv website-master/deploy_html deploy_html
 
 # clean up leftovers
 rm -rf website-master $ZIPFILE
