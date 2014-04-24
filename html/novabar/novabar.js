@@ -61,7 +61,7 @@ jQuery(document).ready( function($) {
         //tb += '<button class="novabar-button" type="submit">Sign in</button>';
         //tb += '</form>';
         tb += '<li><a href="https://www.nova-labs.org/auth/register.html">Register</a></li>';
-        tb += '<li><a href="https://www.nova-labs.org/auth/login.html?target=' + location.href + '">Log In</a></li>';
+        tb += '<li><a href="https://www.nova-labs.org/auth/login.html?dest=' + location.href + '">Log In</a></li>';
     }
 	tb += '</ul>';
 
