@@ -1,0 +1,51 @@
+<%attr>
+    breadcrumb => 'Group'
+</%attr>
+<%args>
+    $action     => ''
+</%args>
+<%perl>
+if ( $action eq 'join' ) {
+    if ( $group->is_restricted_access ) {
+        error( "This group is restricted." );
+    } else {
+        $group->add_members( $User );
+        success( "Group joined!" );
+    }
+} elsif ( $action eq 'leave' ) {
+    $group->remove_members( $User );
+}
+</%perl>
+
+<div class="row">
+
+<div class="span8">
+    <h2>Group Info: <% $group->link  %></h2>
+    <p><% text2html( $group->description ) %></p>
+% unless ( $User->is_anonymous ) {
+    <div class="well" style="padding: 14px 19px">
+%   if ( $User->is_member_of( $group ) ) {
+        <a href="?action=leave" class="btn primary large">Leave this Group</a>
+%   } elsif ( $group->is_restricted_access ) {
+%   } else {
+        <a href="?action=join" class="btn primary large">Join this Group</a>
+%   }
+% }
+    </div>
+</div>
+
+<div class="span8">
+    <h2>Members:</h2>
+    <ul>
+% for my $member ( $group->members ) {
+    <li><% $member->link %></li>
+% }
+    </ul>
+</div>
+
+</div>
+<%shared>
+    my ( $group_id ) = $m->dhandler_arg =~ /^([\w\s\-]+)(\/?|\?|\.html)$/;
+    $m->redirect( '/groups' ) unless $group_id;
+    my $group = NovaLabs->get_group( $group_id );
+</%shared>

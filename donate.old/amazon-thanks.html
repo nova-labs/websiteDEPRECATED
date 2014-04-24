@@ -1,0 +1,62 @@
+<%args>
+    $transactionId      => ''
+    $transactionDate    => ''
+    $signatureVersion   => ''
+    $signatureMethod    => ''
+    $status             => ''
+    $buyerEmail         => ''
+    $referenceId        => ''
+    $operation          => ''
+    $transactionAmount  => ''
+    $recipientEmail     => ''
+    $buyerName          => ''
+    $signature          => ''
+    $recipientName      => ''
+    $paymentMethod      => ''
+    $certificateUrl     => ''
+    $paymentReason      => ''
+</%args>
+<%init>
+# transactionId=16SKFVGOH1LHG6CA8IOPEK1M2R6LDH61ZVA
+# transactionDate=1336422679
+# signatureVersion=2
+# signatureMethod=RSA-SHA1
+# status=PS
+# buyerEmail=amazontest%40jasonkohles.com
+# referenceId=test%40jasonkohles.com%2F1336422667%2F9907
+# operation=pay
+# transactionAmount=USD+20
+# recipientEmail=amazonpayments%40nova-labs.org
+# buyerName=Jason+Kohles
+# signature=qqetaKI9hOBWh%2Bs%2FprTe0cty71fVPSameERCQj215BkPe0W4E%2BC%2FFv1Ya9jICW9k36VmX4gufz0l%0AnSzBKgGKHwg4l2gGOz0SihhPgarGOlrsKCAepdVe%2FxA60dUs6rIvMOGZTApudEFm%2Bw8UqlbHlhLY%0AGnUrKiHmF%2BlyILjQ0gM%3D
+# recipientName=Nova+Labs+Inc
+# paymentMethod=Credit+Card
+# certificateUrl=https%3A%2F%2Ffps.sandbox.amazonaws.com%2Fcerts%2F090911%2FPKICert.pem%3FrequestId%3D1mk2tfwl1kcp0134etyehz5vf5yt6tc77sgsbzphxlko6087jr
+# paymentReason=Nova+Labs+Donation+for+test%40jasonkohles.com
+if ( $transactionId ) {
+open( my $fh, '>>', '/tmp/amazon-transactions.txt' );
+print $fh <<"END";
+transactionId=$transactionId
+transactionDate=$transactionDate
+signatureVersion=$signatureVersion
+signatureMethod=$signatureMethod
+status=$status
+buyerEmail=$buyerEmail
+referenceId=$referenceId
+operation=$operation
+transactionAmount=$transactionAmount
+recipientEmail=$recipientEmail
+buyerName=$buyerName
+signature=$signature
+recipientName=$recipientName
+paymentMethod=$paymentMethod
+certificateUrl=$certificateUrl
+paymentReason=$paymentReason
+-----
+END
+close( $fh );
+}
+</%init>
+<div class="row">
+<h1>Thank You for your support!</h1>
+</div>

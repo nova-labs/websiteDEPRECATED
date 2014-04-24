@@ -1,0 +1,93 @@
+<%attr>
+    breadcrumb      => 'Laser Cutter Fee Timer'
+</%attr>
+<%args></%args>
+<%once></%once>
+<!--
+Painfully simple javascript timer to keep track of Laser machine usage
+
+bob at cogwheel dot com
+
+for https://www.nova-labs.org/
+-->
+<div class="row">
+  <h2>Machine Tool Timer</h2>
+  <h3>Description</h3>
+    <p>This page is a timer to track usage of the laser cutter.</p>
+    <p>Refresh Browser to Reset</p>
+  
+  <h3>Instructions</h3>
+  <ol>
+  <li>Start the timer when you sit down at the machine.</li>
+  <li>Use the machine.</li>
+  <li>Pay the amount based on your member status. Deposit cash or check into the lobby safe.</li>
+  </ol>
+  <div class="span12" style="text-align: center;">
+  <hr>
+  <h3>Elapsed Time</h3>
+  <h4 style="color:green;"><span id="hours">00</span> : <span id="minutes">00</span> : <span id="seconds">00</span></h4>
+  <br /><br />
+  
+  <h3>Fee for Members</h3>
+  <label>Full or Associate<label>
+  <h4 style="color:red;">$<span id="member_rate">0.00</span></h4>
+  <br /><br />
+  
+  <h3>Fee for Non-Members</h3>
+  <h4 style="color:red;">$<span id="non_member_rate">0.00</span></h4>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+    var minutesspan = document.getElementById("minutes");
+    var secondsspan = document.getElementById("seconds");
+    var hoursspan = document.getElementById("hours");
+
+    var member_ratespan = document.getElementById("member_rate");
+    var non_member_ratespan = document.getElementById("non_member_rate");
+
+    var totalSeconds = 0;
+
+    var MemberRateSeconds = 2/3600; // $2 Hourly rate
+    var NonMemberRateSeconds = 4/3600; // $4 Hourly rate
+
+    var tmp;
+
+    setInterval(setVals, 1000); // setVals() Execute 1x/second 
+
+    function setVals()
+    {
+        ++totalSeconds;
+        secondsspan.innerHTML = pad(totalSeconds%60);
+        minutesspan.innerHTML = pad(parseInt((totalSeconds/60)%60));
+
+        tmp = parseInt(totalSeconds/3600);
+        tmp = tmp.toFixed(0);
+        hoursspan.innerHTML = pad(tmp);
+
+        tmp = totalSeconds * MemberRateSeconds;
+        tmp = tmp.toFixed(2);
+        member_ratespan.innerHTML = pad(tmp);
+
+        tmp = totalSeconds * NonMemberRateSeconds;
+        tmp = tmp.toFixed(2);
+        non_member_ratespan.innerHTML = pad(tmp);
+
+
+
+    }
+
+    function pad(val) // add zeroes to the front of a number
+    {
+        var valString = val + "";
+        if(valString.length < 2)
+        {
+            return "0" + valString;
+        }
+        else
+        {
+            return valString;
+        }
+    }
+</script>

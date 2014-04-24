@@ -1,0 +1,77 @@
+<%attr>
+    breadcrumb      => 'Pay'
+</%attr>
+<%args>
+    $amazon_amount  => 0
+</%args>
+
+<div class="row">
+    <div class="span6">
+
+        <p>Do you need to pay for a specific activity?</p>
+<%perl>
+    my %buttons = (
+        '3D Printer Group Build Reservation'    => 200,
+    );
+    my @buttons = ();
+    for my $key ( sort keys %buttons ) {
+        my $button = amazon_button(
+            amount          => "USD $buttons{ $key }",
+            description     => $key,
+            _button         => 'golden_medium_paynow_withmsg_whitebg',
+            _environment    => 'production',
+        );
+        push( @buttons => "<tr><td>$key</td><td>$button</td></tr>\n" );
+    }
+    my $buttons = join( '<br/>', @buttons );
+</%perl>
+<table>
+<% $buttons %>
+</table>
+
+    </div>
+
+    <div class="span6">
+
+    <div class="well">
+    <h2>Amazon Payments</h2>
+
+    <p>To pay through Amazon, please enter an amount, then click the Amazon
+    Payments button that appears.</p>
+
+% if ( $amazon_amount ) {
+<%perl>
+    my $button = amazon_button(
+        amount          => "USD $amazon_amount",
+        description     => "Nova Labs Payment",
+        _button         => 'golden_medium_paynow_withmsg_whitebg',
+        _environment    => 'production',
+    );
+</%perl>
+<p>Click this button to pay $<% $amazon_amount %>.</p>
+<% $button %>
+% } else {
+%   $amazon_amount = 20;
+    <form method="post" action="<% $r->uri %>">
+        Donation amount: $<input type="text" style="width: 4em; text-align: right; font-weight: bold; font-size: 150%;" name="amazon_amount" value="<% $amazon_amount %>" />
+        <input type="submit" value="Submit" class="btn btn-primary" />
+    </form>
+% }
+    </div>
+
+<!--
+    <div class="well">
+    <h2>Dwolla</h2>
+    <p><a href="https://www.dwolla.com/hub/nova-labs"><img src="/images/donate-with-dwolla.png" border="0"></a></p>
+    <p>Please be sure to include your name and email address in the 'Details' section when contributing through Dwolla, so we know who to thank!</p>
+    </div>
+-->
+
+    <div class="well">
+    <h2>Cash / Check / Money Order</h2>
+    <p>Cash (or other offline) payments can be put in the drop safe at Nova
+    Labs, or contact a member of the accounting committee to arrange for other
+    payment methods.</p>
+    </div>
+
+</div>

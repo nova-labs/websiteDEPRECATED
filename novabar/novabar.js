@@ -16,7 +16,7 @@ jQuery(document).ready( function($) {
             break;
         }
     }
-    var sections = [ "About", "Blog", "Wiki", "Calendar", "Sponsors", "Contact" ]; // Groups
+    var sections = [ "About", "Blog", "Wiki", "Calendar", "Membership", "Sponsors", "Contact" ]; // Groups
     if ( uid ) {
         sections = sections.concat( [ "CMS" ] );
     }
@@ -26,9 +26,9 @@ jQuery(document).ready( function($) {
     var tb = '';
     tb += '<div id="novabar-container">';
     tb += '<div id="novabar">';
-    tb += '<h3><a href="/">';
-    //tb += '<img src="/images/NOVALabs-small.png" border="0" />';
-    tb += 'Nova Labs</a></h3>';
+    tb += '<h3><a style="height:40px; padding-top:0px;" href="/">';
+    tb += '<img src="/images/nova-labs-title-inline-clear-border_149x40.png" border="0" />';
+    tb += '</a></h3>';
     tb += '<ul>';
 
     for ( var i = 0 ; i < sections.length ; i++ ) {
@@ -47,25 +47,24 @@ jQuery(document).ready( function($) {
 
     tb += '</ul>';
 
+	tb += '<ul style="float:right">';
+    tb += '<li><a target="_blank" href="http://www.flickr.com/photos/nova-labs/">Photos</a></li>';
+    tb += '<li><a target="_blank" href="http://meetup.com/nova-makers/join">Join Meetup!</a></li>';
     if ( uid ) {
-        tb += '<ul style="float:right">';
         //  tb += '<li><a href="/person/' + uid + '">' + uid + '</a></li>';
         tb += '<li><a href="/account/index.html">My Account</a></li>';
         tb += '<li><a href="https://www.nova-labs.org/auth/LOGOUT">Log Out</a></li>';
-        tb += '</ul>';
     } else {
         //tb += '<form action="/auth/LOGIN" style="float:right">';
         //tb += '<input type="text" name="username" placeholder="Username">';
         //tb += '<input type="password" name="password" placeholder="Password">';
         //tb += '<button class="novabar-button" type="submit">Sign in</button>';
         //tb += '</form>';
-        tb += '<ul style="float:right">';
         tb += '<li><a href="https://www.nova-labs.org/auth/register.html">Register</a></li>';
         tb += '<li><a href="https://www.nova-labs.org/auth/login.html?target=' + location.href + '">Log In</a></li>';
-        tb += '</ul>';
     }
+	tb += '</ul>';
 
-    //tb += '</div></div></div>';
     tb += '</div></div>';
 
     $(tb).appendTo( 'body' );

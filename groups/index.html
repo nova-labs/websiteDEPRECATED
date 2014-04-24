@@ -1,0 +1,15 @@
+<%attr>
+    title       => 'Groups'
+</%attr>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Description</th>
+    </tr>
+% for my $group ( SpaceMan->rs( 'Group' )->all ) {
+    <tr>
+        <td><% $group->name %></td>
+        <td><% text2html( $group->summary ) %></td>
+    </tr>
+% }
+</table>

@@ -1,0 +1,95 @@
+<%attr>
+    breadcrumb      => 'eMatch Submission'
+</%attr>
+
+<%args>
+    $personEmpName  => ''
+    $personEmail  => ''
+    $personName  => ''
+</%args>
+
+<%init>
+my $personUsername = $User->username;
+
+my $err_emp_name = '';
+my $err_your_email = '';
+my $err_your_name = '';
+if ( $personEmpName || $personEmail || $personName ) {
+    $err_emp_name = 'Please provide an employer name' unless $personEmpName;
+    $err_your_email = 'Please provide your email address' unless $personEmail;
+    $err_your_name = 'Please provide your name' unless $personName;
+
+    if ( $err_emp_name || $err_your_email || $err_your_name )
+	{
+        error( "Could not process submission. Please ensure all fields are filled in." );
+    } 
+	else
+	{
+        $User->send_email( 'misc/ematch.txt' => {
+                username       => $personUsername,
+                name           => $personName,
+                email          => $personEmail,
+                empName        => $personEmpName
+            } );
+		success(
+			'Submission successful!<p><strong>Thank you for supporting Nova Labs.</strong></p><p>A member will contact you soon regarding your company&#39;s eligibility for matching gifts.</p>'
+		);
+    }
+}
+
+my $class_emp_name = $err_emp_name ? 'error' : '';
+my $class_your_email = $err_your_email ? 'error' : '';
+my $class_your_name = $err_your_name ? 'error' : '';
+
+
+</%init>
+
+<form method="POST" action="<% $r->uri %>" class="form-horizontal">
+
+<div class="row">
+    <div class="span8">
+		<h2>eMatch - Matching Gift Employer Submission Page</h2>
+	</div>
+    <div class="span5">
+        <fieldset>
+
+            <div class="control-group <% $class_your_name %>">
+                <label class="control-label" for="personName">Your Name</label>
+                <div class="controls">
+                    <input class="input-xlarge" name="personName" type="text" value="<% $User->name %>" />
+                    <p class="help-block"><% $err_your_name %></p>
+                </div>
+            </div>
+
+            <div class="control-group <% $class_your_email %>">
+                <label class="control-label" for="personEmail">Your Email Address</label>
+                <div class="controls">
+                    <input class="input-xlarge" name="personEmail" type="email" value="<% $User->email %>" />
+                    <p class="help-block"><% $err_your_email %></p>
+                </div>
+            </div>
+
+            <div class="control-group <% $class_emp_name %>">
+                <label class="control-label" for="personEmpName">Employer's Name</label>
+                <div class="controls">
+                    <input class="input-xlarge" name="personEmpName" type="text"/>
+                    <p class="help-block"><% $err_emp_name %></p>
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+    <div class="span5">
+        <p><strong>Will your employer match gifts?</strong> To find out, please register your name and employer.  We will show you if your employer is a match to our known list of employers that do match gifts. If your employer not on the list, we will do a web search to find out and let you know. We respect privacy and do not share any user details with 3rd parties.</p>
+		<p><strong>Take advantage of your company's matching gift program.</strong> Did you know that 16% of matching gift companies will match <strong>volunteer</strong> time. We have many opportunities to contribute your time for community benefit.</p>
+    </div>
+</div>
+<p>An email will be sent to you with details on your employer's matching gift program if it's in our list of known matching gift companies.</p>
+<p><strong>Thank you very much for participating in our eMatch matching gifts campaign.</strong></p>
+<div class="actions">
+    <button type="submit" class="btn btn-primary">Submit</button>
+    &nbsp;
+    <button type="reset" class="btn">Cancel</button>
+</div>
+
+</form>
