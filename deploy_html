@@ -1,27 +1,40 @@
 #!/bin/bash
 
+NOW=`date +%Y%m%d_%H%M%S`
 DESTDIR=/tmp/www
-ZIPFILE=/tmp/website.$$.zip
+ZIPDIR=${DESTDIR}/website_$NOW
+DESTDIR_HTML=${DESTDIR}/html_$NOW
+
+# make a working dir
+mkdir -p $ZIPDIR
+# go to the working directory
+cd $ZIPDIR
 
 # get the latest version from github
-wget https://github.com/nova-labs/website/archive/master.zip -O $ZIPFILE
-
-# go to the destination directory
-cd $DESTDIR
+wget https://github.com/nova-labs/website/archive/master.zip -O master.zip
 
 # unzip the website zipfile
-unzip $ZIPFILE 
-
-# delete the old backup if it exists
-[ -d html.prev ] && rm -rf html.prev
-
-# move the current site to be the new backup
-mv html html.prev
+unzip master.zip
 
 # move the new site to the production location
-mv website-master/html html
-mv website-master/deploy_html deploy_html
+mv website-master/html $DESTDIR_HTML
+mv -f website-master/deploy_html $DESTDIR/deploy_html
+
+cd $DESTDIR
+
+if [ ! -L html ]; then
+    if [ -d html ]; then
+        # Legacy html directory that's not a symlink
+        mv html html.legacy
+    else
+        # no idea wtf this is, but move it out of the way
+        mv html html_$NOW.wtf
+    fi
+fi
+
+# make the symlink, replacing an existing one if necessary
+ln -snf html_$NOW html
 
 # clean up leftovers
-rm -rf website-master $ZIPFILE
+rm -rf $ZIPDIR
 
